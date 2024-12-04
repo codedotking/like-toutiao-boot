@@ -34,4 +34,5 @@ build/
 
 
 ### springboot mvn wrapper ###
-application-dev.properties
+application-dev.yml
+application-test.yml
