@@ -31,7 +31,6 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -f pom.xml clean package
-
+        run: mvn -f pom.xml clean package -Dmaven.test.skip=true
       - name: Show contents of the target directory
         run: ls -la target

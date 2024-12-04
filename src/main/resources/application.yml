@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: toutiao-boot
+
+  profiles:
+    active: @spring.profiles.active@
