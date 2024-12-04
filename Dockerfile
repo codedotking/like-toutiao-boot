@@ -1,15 +1,13 @@
-FROM eclipse-temurin:17-jre
+FROM java:17
+
 WORKDIR application
 ARG JAR_FILE=target/*.jar
-
-
-
+# Copy the jar file from the build stage
 COPY target/*.jar application.jar
 
-
-ENV username=""
-ENV password=""
-ENV url=""
+ENV DB_USERNAME=""
+ENV DB_PASSWORD=""
+ENV DB_URL=""
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "application.jar"]
