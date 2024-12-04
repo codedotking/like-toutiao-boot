@@ -36,7 +36,13 @@ jobs:
       - name: 展示 target 目录
         run: ls -la target
 
-      - name: 构建 Docker 镜像
+      - name: 登录 docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: 构建 Docker 镜像,推送镜像到 docker hub
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -44,16 +50,3 @@ jobs:
           push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/rest-api:latest
 
-      - name: 登录 docker hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: 推送镜像到 docker hub
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/rest-api:latest
