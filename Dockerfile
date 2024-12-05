@@ -1,4 +1,4 @@
-FROM openjdk:24-ea-17-nanoserver-1809
+FROM bitnami/java:17
 # 设置工作目录 cd
 WORKDIR /app
 # Copy the jar file from the build stage
