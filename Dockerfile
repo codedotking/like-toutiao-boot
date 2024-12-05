@@ -1,13 +1,9 @@
 FROM java:17
-
-WORKDIR application
-ARG JAR_FILE=target/*.jar
+# 设置工作目录 cd
+WORKDIR /app
 # Copy the jar file from the build stage
 COPY target/*.jar application.jar
-
-ENV DB_USERNAME=""
-ENV DB_PASSWORD=""
-ENV DB_URL=""
-
+COPY src/main/resources/application.yml conf/application.yml
+# 暴露的端口
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "application.jar", "--spring.config.location=/conf/application.yml"]
