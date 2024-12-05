@@ -1,4 +1,4 @@
-FROM java:17
+FROM openjdk:24-ea-17-nanoserver-1809
 # 设置工作目录 cd
 WORKDIR /app
 # Copy the jar file from the build stage
