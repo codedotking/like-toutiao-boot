@@ -6,4 +6,4 @@ COPY target/*.jar application.jar
 COPY src/main/resources/application.yml conf/application.yml
 # 暴露的端口
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "application.jar", "--spring.config.location=/conf/application.yml"]
+ENTRYPOINT ["java", "-jar", "application.jar", "--spring.config.location=/app/conf/"]
