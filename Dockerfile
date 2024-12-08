@@ -3,9 +3,9 @@ FROM bitnami/java:17
 WORKDIR /app
 # Copy the jar file from the build stage
 COPY target/*.jar application.jar
-# 将配置文件复制到conf
 COPY src/main/resources/application.yml conf/application.yml
+
+VOLUME ["/app/conf"]
 # 暴露的端口
 EXPOSE 8080
-# 启动命令
-ENTRYPOINT ["java", "-jar", "application.jar", "--spring.config.location=conf/"]
+ENTRYPOINT ["java", "-jar", "application.jar", "--spring.config.location=/app/conf/"]
