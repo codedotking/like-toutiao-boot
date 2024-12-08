@@ -58,7 +58,7 @@ jobs:
           user: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           # 执行脚本
-          source: |
+          script: |
             echo "Pulling Docker image..."
             docker pull crazyhuman/like_toutiao_api:latest
 
@@ -68,5 +68,4 @@ jobs:
 
             echo "Running new container..."
             docker run -d --name like_toutiao_server -v /etc/like_toutiao:/app/conf/ -p 8848:80 crazyhuman/like_toutiao_api:latest
-
             echo "Deployment completed!"
