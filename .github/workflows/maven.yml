@@ -50,22 +50,30 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/like_toutiao_api:latest
 
-      - name: 部署到服务器
-        uses: appleboy/scp-action@master
+      #      - name: 部署到服务器
+      #        uses: appleboy/scp-action@master
+      #        with:
+      #          host: ${{ secrets.SSH_HOST }}
+      #          port: ${{ secrets.SSH_PORT }}
+      #          user: ${{ secrets.SSH_USER }}
+      #          password: ${{ secrets.SSH_PASSWORD }}
+      #          # 执行脚本
+      #          script: |
+      #            echo "Pulling Docker image..."
+      #            docker pull crazyhuman/like_toutiao_api:latest
+      #
+      #            echo "Stopping and removing existing container..."
+      #            docker stop like_toutiao_server || true
+      #            docker rm like_toutiao_server || true
+      #
+      #            echo "Running new container..."
+      #            docker run -d --name like_toutiao_server -v /etc/like_toutiao:/app/conf/ -p 8848:80 crazyhuman/like_toutiao_api:latest
+      #            echo "Deployment completed!"
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
           user: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
-          # 执行脚本
-          script: |
-            echo "Pulling Docker image..."
-            docker pull crazyhuman/like_toutiao_api:latest
-
-            echo "Stopping and removing existing container..."
-            docker stop like_toutiao_server || true
-            docker rm like_toutiao_server || true
-
-            echo "Running new container..."
-            docker run -d --name like_toutiao_server -v /etc/like_toutiao:/app/conf/ -p 8848:80 crazyhuman/like_toutiao_api:latest
-            echo "Deployment completed!"
+          script: whoami
