@@ -6,7 +6,7 @@ import com.hongyan.toutiao.lib.PermissionUtil;
 import com.hongyan.toutiao.mapper.PermissionMapper;
 import com.hongyan.toutiao.model.db.Permission;
 import com.hongyan.toutiao.model.dto.PermissionDto;
-import com.hongyan.toutiao.model.request.CreatePermissionRequest;
+import com.hongyan.toutiao.model.vo.CreatePermissionRequest;
 import com.hongyan.toutiao.service.IPermissionService;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;

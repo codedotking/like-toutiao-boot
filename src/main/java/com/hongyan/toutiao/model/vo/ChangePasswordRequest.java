@@ -1,4 +1,4 @@
-package com.hongyan.toutiao.model.request;
+package com.hongyan.toutiao.model.vo;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

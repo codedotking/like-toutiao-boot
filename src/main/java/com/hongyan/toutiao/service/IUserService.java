@@ -5,7 +5,7 @@ import com.hongyan.toutiao.model.db.User;
 import com.hongyan.toutiao.model.dto.LoginTokenDto;
 import com.hongyan.toutiao.model.dto.UserDetailDto;
 import com.hongyan.toutiao.model.dto.UserPageDto;
-import com.hongyan.toutiao.model.request.*;
+import com.hongyan.toutiao.model.vo.*;
 import com.hongyan.toutiao.model.res.Page;
 
 /**

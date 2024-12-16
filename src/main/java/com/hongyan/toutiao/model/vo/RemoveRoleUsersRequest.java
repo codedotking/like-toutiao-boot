@@ -1,4 +1,4 @@
-package com.hongyan.toutiao.model.request;
+package com.hongyan.toutiao.model.vo;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author dhb
  */
 @Data
-public class AddRoleUsersRequest {
+public class RemoveRoleUsersRequest {
 
     private List<Long> userIds;
 

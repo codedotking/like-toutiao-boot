@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hongyan.toutiao.model.db.Role;
 import com.hongyan.toutiao.model.dto.PermissionDto;
 import com.hongyan.toutiao.model.dto.RolePageDto;
-import com.hongyan.toutiao.model.request.*;
+import com.hongyan.toutiao.model.vo.*;
 import com.hongyan.toutiao.model.res.Page;
 
 import java.util.List;

@@ -3,11 +3,15 @@ package com.hongyan.toutiao.model.db;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.hongyan.toutiao.model.dto.ArticlePageDto;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 
 @Data
 @TableName("Article")
-public class ArticleEntity {
+@AutoMappers({@AutoMapper(target = ArticlePageDto.class)})
+public class Article {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

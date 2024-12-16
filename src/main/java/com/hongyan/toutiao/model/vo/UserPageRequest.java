@@ -1,12 +1,10 @@
-package com.hongyan.toutiao.model.request;
+package com.hongyan.toutiao.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 用户分页查询
- *
- * @author dhb
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

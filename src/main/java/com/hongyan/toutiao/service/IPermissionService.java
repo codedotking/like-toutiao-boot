@@ -4,7 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hongyan.toutiao.model.db.Permission;
 import com.hongyan.toutiao.model.dto.PermissionDto;
-import com.hongyan.toutiao.model.request.CreatePermissionRequest;
+import com.hongyan.toutiao.model.vo.CreatePermissionRequest;
 
 import java.util.List;
 

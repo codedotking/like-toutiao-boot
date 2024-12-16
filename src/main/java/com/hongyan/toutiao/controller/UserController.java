@@ -9,7 +9,7 @@ import com.hongyan.toutiao.config.SaTokenConfigure;
 import com.hongyan.toutiao.model.dto.UserDetailDto;
 import com.hongyan.toutiao.model.dto.UserPageDto;
 import com.hongyan.toutiao.model.exception.BizException;
-import com.hongyan.toutiao.model.request.*;
+import com.hongyan.toutiao.model.vo.*;
 import com.hongyan.toutiao.model.res.BizResponseCode;
 import com.hongyan.toutiao.model.res.Page;
 import com.hongyan.toutiao.model.res.R;

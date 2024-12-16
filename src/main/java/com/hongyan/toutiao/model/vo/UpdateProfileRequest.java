@@ -1,25 +1,24 @@
-package com.hongyan.toutiao.model.request;
+package com.hongyan.toutiao.model.vo;
 
 import com.hongyan.toutiao.model.db.Profile;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 /**
- * 注册用户的用户信息
+ * 更新用户信息
  */
 @Data
 @AutoMapper(target = Profile.class)
-public class RegisterUserProfileRequest {
+public class UpdateProfileRequest{
 
-    private String nickName;
+
+    private Long id;
 
     private Integer gender;
-
-    private String avatar;
 
     private String address;
 
     private String email;
 
-
+    private String nickName;
 }

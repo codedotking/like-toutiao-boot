@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
   profiles:
-    active: h2
+    active: dev
 
 sa-token:
   token-name: Authorization

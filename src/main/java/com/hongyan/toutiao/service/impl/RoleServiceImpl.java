@@ -18,7 +18,7 @@ import com.hongyan.toutiao.model.db.UserRole;
 import com.hongyan.toutiao.model.dto.PermissionDto;
 import com.hongyan.toutiao.model.dto.RolePageDto;
 import com.hongyan.toutiao.model.exception.BadRequestException;
-import com.hongyan.toutiao.model.request.*;
+import com.hongyan.toutiao.model.vo.*;
 import com.hongyan.toutiao.model.res.Page;
 import com.hongyan.toutiao.service.IPermissionService;
 import com.hongyan.toutiao.service.IRolePermissionService;

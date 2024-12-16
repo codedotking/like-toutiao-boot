@@ -1,4 +1,4 @@
-package com.hongyan.toutiao.model.request;
+package com.hongyan.toutiao.model.vo;
 
 import com.hongyan.toutiao.model.db.Permission;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * 创建权限
+ * 更新权限
  */
 @Data
 @AutoMapper(target = Permission.class)
-public class CreatePermissionRequest{
+public class UpdatePermissionRequest {
 
     @NotBlank
     private String name;
@@ -20,6 +20,7 @@ public class CreatePermissionRequest{
 
     @NotBlank
     private String type;
+
 
     private Long parentId;
 
@@ -33,7 +34,7 @@ public class CreatePermissionRequest{
 
     private String layout;
 
-    private Boolean keepalive;
+    private Boolean keepAlive;
 
     private String method;
 
