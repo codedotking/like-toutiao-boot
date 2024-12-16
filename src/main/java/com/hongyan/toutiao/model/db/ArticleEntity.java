@@ -10,7 +10,7 @@ import lombok.Data;
 public class ArticleEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
-    private int id;
+    private Long id;
 
     private String title;
 

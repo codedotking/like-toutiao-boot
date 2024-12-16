@@ -36,3 +36,6 @@ build/
 ### springboot mvn wrapper ###
 application-dev.yml
 application-test.yml
+
+
+admin/node_modules/
