@@ -1,4 +1,4 @@
-package com.hongyan.toutiao.model.auth;
+package com.hongyan.toutiao.annotation.auth;
 
 /**
  * 角色类型

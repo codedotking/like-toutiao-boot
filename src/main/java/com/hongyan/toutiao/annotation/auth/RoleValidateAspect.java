@@ -1,4 +1,4 @@
-package com.hongyan.toutiao.model.auth;
+package com.hongyan.toutiao.annotation.auth;
 
 import cn.dev33.satoken.stp.StpUtil;
 import org.aspectj.lang.JoinPoint;
