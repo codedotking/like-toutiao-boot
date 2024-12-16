@@ -1,6 +1,7 @@
 package com.hongyan.toutiao.model.request;
 
-import cn.dhbin.mapstruct.helper.core.Convert;
+import com.hongyan.toutiao.model.db.User;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,11 +9,10 @@ import java.util.List;
 
 /**
  * 注册用户
- *
- * @author dhb
  */
 @Data
-public class RegisterUserRequest implements Convert {
+@AutoMapper(target = User.class)
+public class RegisterUserRequest {
 
     @Length(min = 6, max = 20, message = "用户名长度必须是6到20之间")
     private String username;

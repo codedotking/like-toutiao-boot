@@ -1,11 +1,23 @@
 spring:
   application:
     name: toutiao-boot
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
   profiles:
     active: h2
+
 sa-token:
   token-name: Authorization
   token-prefix: Bearer
   jwt-secret-key: 'd0!doc15415B0*4G0`'
 knife4j:
   enable: true
+
+decorator:
+  datasource:
+    p6spy:
+      # 日志格式
+      log-format: "[SQL]:%(sql) - [TIME]:%(executionTime)\n"
+#      # 自定义日志类
+#      logging: custom
+#      custom-appender-class: com.example.testinit.config.StdoutLogger

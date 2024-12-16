@@ -24,6 +24,7 @@ import com.hongyan.toutiao.service.IPermissionService;
 import com.hongyan.toutiao.service.IRolePermissionService;
 import com.hongyan.toutiao.service.IRoleService;
 import com.hongyan.toutiao.service.IUserRoleService;
+import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     private final IRolePermissionService rolePermissionService;
 
     private final IUserRoleService userRoleService;
+
+    private final Converter converter;
 
     @Override
     public List<Role> findRolesByUserId(Long userId) {
@@ -75,12 +78,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
                 .or()
                 .eq(Role::getName, request.getName())
                 .exists();
-
         if (exists) {
             throw new BadRequestException("角色已存在（角色名和角色编码不能重复）");
         }
-
-        Role role = request.convert(Role.class);
+        // 检查权限是否为空
+        if (CollUtil.isEmpty(request.getPermissionIds())) {
+            throw new BadRequestException("角色权限不能为空");
+        }
+        Role role = converter.convert(request, Role.class);
         save(role);
         List<RolePermission> permissionList = request.getPermissionIds().stream()
                 .map(permId -> {
@@ -101,7 +106,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
                 .eq(ObjectUtil.isNotNull(request.getEnable()), Role::getEnable, request.getEnable());
         IPage<RolePageDto> pageRet = this.page(qp, queryWrapper)
                 .convert(role -> {
-                    RolePageDto dto = role.convert(RolePageDto.class);
+                    RolePageDto dto = converter.convert(role, RolePageDto.class);
                     List<Long> permissionList = rolePermissionService.lambdaQuery().select(RolePermission::getPermissionId)
                             .eq(RolePermission::getRoleId, role.getId())
                             .list().stream().map(RolePermission::getPermissionId)
@@ -117,7 +122,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     public List<PermissionDto> findRolePermissions(Long id) {
         return permissionService.findByRoleId(id)
                 .stream()
-                .map(permission -> permission.convert(PermissionDto.class))
+                .map(permission -> converter.convert(permission, PermissionDto.class))
                 .toList();
     }
 

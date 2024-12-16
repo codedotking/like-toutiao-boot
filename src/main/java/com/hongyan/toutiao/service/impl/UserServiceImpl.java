@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import io.github.linpeilie.Converter;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private final ICaptchaService captchaService;
 
     private final PreviewProperties previewProperties;
+
+    private final Converter converter;
+
 
     @Override
     public LoginTokenDto login(LoginRequest request) {
@@ -81,12 +85,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public UserDetailDto detail(Long userId, String roleCode) {
         User user = getById(userId);
         log.info("user: {}", user);
-        UserDetailDto userDetailDto = user.convert(UserDetailDto.class);
-        ProfileDto profileDto = IProfileService.findByUserId(userId).convert(ProfileDto.class);
+        UserDetailDto userDetailDto = converter.convert(user, UserDetailDto.class);
+        log.info("userDetailDto: {}", userDetailDto);
+
+        Profile userProfile = IProfileService.findByUserId(userId);
+        ProfileDto profileDto = converter.convert(userProfile, ProfileDto.class);
         List<RoleDto> roleDtoList = roleService.findRolesByUserId(userId)
                 .stream()
                 .filter(Role::getEnable)
-                .map(role -> role.convert(RoleDto.class))
+                .map(role -> converter.convert(role, RoleDto.class))
                 .toList();
         if (roleDtoList.isEmpty()) {
             throw new BizException(BizResponseCode.ERR_11005);
@@ -94,6 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userDetailDto.setProfile(profileDto);
         userDetailDto.setRoles(roleDtoList);
         for (RoleDto roleDto : roleDtoList) {
+            log.info("roleDto: {}, roleCode :{}", roleDto, roleCode);
             if (roleDto.getCode().equals(roleCode)) {
                 userDetailDto.setCurrentRole(roleDto);
                 break;
@@ -125,12 +133,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (exists) {
             throw new BizException(BizResponseCode.ERR_10001);
         }
-        User user = request.convert(User.class);
+        User user = converter.convert(request, User.class);
         user.setPassword(BCrypt.hashpw(user.getPassword()));
         this.save(user);
 
-        Profile profile = Optional.ofNullable(request.getProfile()).orElse(new RegisterUserProfileRequest())
-                .convert(Profile.class);
+        RegisterUserProfileRequest registerUserProfileRequest = Optional.ofNullable(request.getProfile()).orElse(new RegisterUserProfileRequest());
+        Profile profile = converter.convert(registerUserProfileRequest, Profile.class);
         profile.setUserId(user.getId());
         if (CollUtil.isNotEmpty(request.getRoleIds())) {
             List<UserRole> roleList = request.getRoleIds().stream()
@@ -192,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                         request.getEnable())
                 .convert(dto -> {
                     List<RoleDto> roleDtoList = roleService.findRolesByUserId(dto.getId()).stream()
-                            .map(role -> role.convert(RoleDto.class)).toList();
+                            .map(role -> converter.convert(role, RoleDto.class)).toList();
                     dto.setRoles(roleDtoList);
                     return dto;
                 });
@@ -233,7 +241,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public void updateProfile(Long id, UpdateProfileRequest request) {
-        Profile profile = request.convert(Profile.class);
+        Profile profile = converter.convert(request, Profile.class);
         IProfileService.updateById(profile);
     }
 

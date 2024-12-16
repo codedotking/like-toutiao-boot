@@ -36,6 +36,7 @@
         />
       </MeQueryItem>
     </MeCrud>
+
     <MeModal ref="modalRef" width="520px">
       <n-form
         ref="modalFormRef"
@@ -66,7 +67,15 @@
         >
           <n-input v-model:value="modalForm.code" :disabled="modalAction !== 'add'" />
         </n-form-item>
-        <n-form-item label="权限" path="permissionIds">
+        <n-form-item
+          label="权限"
+          path="permissionIds"
+          :rule="{
+            required: true,
+            message: '请选择权限',
+            trigger: ['blur'],
+          }"
+        >
           <n-tree
             key-field="id"
             label-field="name"
@@ -91,6 +100,7 @@
         </n-form-item>
       </n-form>
     </MeModal>
+
   </CommonPage>
 </template>
 
@@ -98,6 +108,7 @@
 import { MeCrud, MeModal, MeQueryItem } from '@/components'
 import { useCrud } from '@/composables'
 import { NButton, NSwitch } from 'naive-ui'
+import { useRouter } from 'vue-router'
 import api from './api'
 
 defineOptions({ name: 'RoleMgt' })

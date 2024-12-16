@@ -1,6 +1,7 @@
 package com.hongyan.toutiao.model.request;
 
-import cn.dhbin.mapstruct.helper.core.Convert;
+import com.hongyan.toutiao.model.db.Permission;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -8,7 +9,8 @@ import lombok.Data;
  * 更新权限
  */
 @Data
-public class UpdatePermissionRequest implements Convert {
+@AutoMapper(target = Permission.class)
+public class UpdatePermissionRequest {
 
     @NotBlank
     private String name;

@@ -1,16 +1,16 @@
 package com.hongyan.toutiao.model.request;
 
-import cn.dhbin.mapstruct.helper.core.Convert;
+import com.hongyan.toutiao.model.db.Permission;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
  * 创建权限
- *
- * @author dhb
  */
 @Data
-public class CreatePermissionRequest implements Convert {
+@AutoMapper(target = Permission.class)
+public class CreatePermissionRequest{
 
     @NotBlank
     private String name;
@@ -20,7 +20,6 @@ public class CreatePermissionRequest implements Convert {
 
     @NotBlank
     private String type;
-
 
     private Long parentId;
 

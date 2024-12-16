@@ -23,7 +23,6 @@
         </header>
       </template>
       <slot />
-
       <!-- 底部按钮 -->
       <template #footer>
         <slot name="footer">
@@ -33,7 +32,6 @@
             </n-button>
             <n-button
               v-if="modalOptions.showOk"
-              type="primary"
               :loading="modalOptions.okLoading"
               class="ml-20"
               @click="handleOk()"
@@ -135,9 +133,9 @@ function close() {
   show.value = false
 }
 
-// 定义一个handleOk函数，用于处理模态框确定操作
+// 定义一个 handleOk 函数，用于处理模态框确定操作
 async function handleOk(data) {
-  // 如果modalOptions中没有onOk函数，则直接关闭模态框
+  // 如果 modalOptions 中没有 onOk 函数，则直接关闭模态框
   if (typeof modalOptions.value.onOk !== 'function') {
     return close()
   }

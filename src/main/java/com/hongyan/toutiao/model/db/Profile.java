@@ -1,10 +1,12 @@
 package com.hongyan.toutiao.model.db;
 
-import cn.dhbin.mapstruct.helper.core.Convert;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.hongyan.toutiao.model.dto.ProfileDto;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 
 /**
@@ -14,7 +16,10 @@ import lombok.Data;
  */
 @Data
 @TableName("profile")
-public class Profile implements Convert {
+@AutoMappers({
+        @AutoMapper(target = ProfileDto.class)
+})
+public class Profile {
 
     @TableId(type = IdType.AUTO)
     private Long id;

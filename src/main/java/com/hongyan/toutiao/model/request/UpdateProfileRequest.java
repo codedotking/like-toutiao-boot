@@ -1,15 +1,15 @@
 package com.hongyan.toutiao.model.request;
 
-import cn.dhbin.mapstruct.helper.core.Convert;
+import com.hongyan.toutiao.model.db.Profile;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 /**
  * 更新用户信息
- *
- * @author dhb
  */
 @Data
-public class UpdateProfileRequest implements Convert {
+@AutoMapper(target = Profile.class)
+public class UpdateProfileRequest{
 
 
     private Long id;

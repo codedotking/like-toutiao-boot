@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 /**
  * {@link Preview}切面处理
  *
- * @author dhb
  */
 @Aspect
 @Component

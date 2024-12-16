@@ -8,6 +8,7 @@ import com.hongyan.toutiao.model.request.CreatePermissionRequest;
 import com.hongyan.toutiao.model.request.UpdatePermissionRequest;
 import com.hongyan.toutiao.model.res.R;
 import com.hongyan.toutiao.service.IPermissionService;
+import io.github.linpeilie.Converter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,6 @@ import java.util.List;
 
 /**
  * 权限Controller
- *
- * @author dhb
  */
 @RestController
 @RequestMapping("/permission")
@@ -29,6 +28,8 @@ public class PermissionController {
 
 
     private final IPermissionService permissionService;
+
+    private final Converter converter;
 
     /**
      * 新建权限
@@ -101,7 +102,7 @@ public class PermissionController {
     @GetMapping("{id}")
     @Operation(summary = "根据id获取")
     public R<PermissionDto> findOne(@PathVariable Long id) {
-        PermissionDto permissionDto = permissionService.getById(id).convert(PermissionDto.class);
+        PermissionDto permissionDto = converter.convert(permissionService.getById(id),PermissionDto.class);
         return R.ok(permissionDto);
     }
 
@@ -113,7 +114,7 @@ public class PermissionController {
     @PatchMapping("{id}")
     @Operation(summary = "根据id更新")
     public R<Object> update(@PathVariable Long id, @RequestBody UpdatePermissionRequest request) {
-        Permission permission = request.convert(Permission.class);
+        Permission permission = converter.convert(request, Permission.class);
         permission.setId(id);
         permissionService.updateById(permission);
         return R.ok();
@@ -141,7 +142,7 @@ public class PermissionController {
     @Operation(summary = "根据父id获取权限列表")
     public R<List<PermissionDto>> findButtonAndApi(@PathVariable Long parentId) {
         List<PermissionDto> permissions = permissionService.findButton(parentId)
-            .stream().map(permission -> permission.convert(PermissionDto.class))
+            .stream().map(permission -> converter.convert(permission, PermissionDto.class))
             .toList();
         return R.ok(permissions);
     }

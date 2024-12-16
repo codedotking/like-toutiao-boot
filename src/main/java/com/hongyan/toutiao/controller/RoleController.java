@@ -14,6 +14,7 @@ import com.hongyan.toutiao.model.request.*;
 import com.hongyan.toutiao.model.res.Page;
 import com.hongyan.toutiao.model.res.R;
 import com.hongyan.toutiao.service.IRoleService;
+import io.github.linpeilie.Converter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ import java.util.List;
 public class RoleController {
 
     private final IRoleService roleService;
+
+    private final Converter converter;
 
     /**
      * 新建角色
@@ -59,7 +62,7 @@ public class RoleController {
         List<RoleDto> roleDtoList = roleService.lambdaQuery().eq(ObjectUtil.isNotNull(enable), Role::getEnable, enable)
                 .list()
                 .stream()
-                .map(role -> role.convert(RoleDto.class))
+                .map(role -> converter.convert(role, RoleDto.class))
                 .toList();
         return R.ok(roleDtoList);
     }
@@ -98,7 +101,7 @@ public class RoleController {
     @Roles(RoleType.SUPER_ADMIN)
     @Operation(summary = "根据id获取")
     public R<RoleDto> findOne(@PathVariable Long id) {
-        RoleDto roleDto = roleService.getById(id).convert(RoleDto.class);
+        RoleDto roleDto = converter.convert(roleService.getById(id), RoleDto.class);
         return R.ok(roleDto);
     }
 
