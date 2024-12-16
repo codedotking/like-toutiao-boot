@@ -55,10 +55,12 @@ public class AuthController {
                                   HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         String captchaKey = (String) session.getAttribute(CAPTCHA_KEY);
+        log.info("captchaKey: {}", captchaKey);
         if (captchaKey != null) {
             request.setCaptchaKey(captchaKey);
         }
         LoginTokenDto tokenDto = userService.login(request);
+        log.info("token: {}", tokenDto);
         return R.ok(tokenDto);
     }
 

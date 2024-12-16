@@ -24,17 +24,14 @@ import com.hongyan.toutiao.model.res.BizResponseCode;
 import com.hongyan.toutiao.model.res.Page;
 import com.hongyan.toutiao.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * UserEntity Service impl
- *
- * @author dhb
- */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -60,17 +57,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return login(request, user);
         }
         if (StrUtil.isBlank(request.getCaptchaKey())
-            || !captchaService.verify(request.getCaptchaKey(), request.getCaptcha())) {
+                || !captchaService.verify(request.getCaptchaKey(), request.getCaptcha())) {
             throw new BizException(BizResponseCode.ERR_10003);
         }
         return login(request, user);
     }
 
     private LoginTokenDto login(LoginRequest request, User user) {
+        log.info("login: {}", user);
         boolean checkPw = BCrypt.checkpw(request.getPassword(), user.getPassword());
+        log.info("checkPw: {}", checkPw);
         if (checkPw) {
             // 查询用户的角色
             List<Role> roles = roleService.findRolesByUserId(user.getId());
+            log.info("roles: {}", roles);
             return generateToken(user, roles, roles.isEmpty() ? "" : roles.getFirst().getCode());
         } else {
             throw new BizException(BizResponseCode.ERR_10002);
@@ -83,10 +83,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         UserDetailDto userDetailDto = user.convert(UserDetailDto.class);
         ProfileDto profileDto = IProfileService.findByUserId(userId).convert(ProfileDto.class);
         List<RoleDto> roleDtoList = roleService.findRolesByUserId(userId)
-            .stream()
-            .filter(Role::getEnable)
-            .map(role -> role.convert(RoleDto.class))
-            .toList();
+                .stream()
+                .filter(Role::getEnable)
+                .map(role -> role.convert(RoleDto.class))
+                .toList();
         if (roleDtoList.isEmpty()) {
             throw new BizException(BizResponseCode.ERR_11005);
         }
@@ -129,16 +129,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         this.save(user);
 
         Profile profile = Optional.ofNullable(request.getProfile()).orElse(new RegisterUserProfileRequest())
-            .convert(Profile.class);
+                .convert(Profile.class);
         profile.setUserId(user.getId());
         if (CollUtil.isNotEmpty(request.getRoleIds())) {
             List<UserRole> roleList = request.getRoleIds().stream()
-                .map(roleId -> {
-                    UserRole userRole = new UserRole();
-                    userRole.setUserId(user.getId());
-                    userRole.setRoleId(roleId);
-                    return userRole;
-                }).toList();
+                    .map(roleId -> {
+                        UserRole userRole = new UserRole();
+                        userRole.setUserId(user.getId());
+                        userRole.setRoleId(roleId);
+                        return userRole;
+                    }).toList();
             userRoleService.saveBatch(roleList);
         }
         IProfileService.save(profile);
@@ -148,14 +148,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public LoginTokenDto refreshToken() {
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         StpUtil.login(tokenInfo.getLoginId(), SaLoginConfig
-            .setExtra(SaTokenConfigure.JWT_USER_ID_KEY,
-                StpUtil.getExtra(SaTokenConfigure.JWT_USER_ID_KEY))
-            .setExtra(SaTokenConfigure.JWT_USERNAME_KEY,
-                StpUtil.getExtra(SaTokenConfigure.JWT_USERNAME_KEY))
-            .setExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY,
-                StpUtil.getExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY))
-            .setExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY,
-                StpUtil.getExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY))
+                .setExtra(SaTokenConfigure.JWT_USER_ID_KEY,
+                        StpUtil.getExtra(SaTokenConfigure.JWT_USER_ID_KEY))
+                .setExtra(SaTokenConfigure.JWT_USERNAME_KEY,
+                        StpUtil.getExtra(SaTokenConfigure.JWT_USERNAME_KEY))
+                .setExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY,
+                        StpUtil.getExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY))
+                .setExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY,
+                        StpUtil.getExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY))
         );
         SaTokenInfo newTokenInfo = StpUtil.getTokenInfo();
         LoginTokenDto dto = new LoginTokenDto();
@@ -172,8 +172,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         user.setPassword(BCrypt.hashpw(request.getNewPassword()));
         lambdaUpdate().set(User::getPassword, BCrypt.hashpw(request.getNewPassword()))
-            .eq(User::getUsername, username)
-            .update();
+                .eq(User::getUsername, username)
+                .update();
         StpUtil.logout();
     }
 
@@ -182,19 +182,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         IPage<User> qp = request.toPage();
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(StrUtil.isNotBlank(request.getUsername()), User::getUsername, request.getUsername())
-            .or()
-            .eq(ObjectUtil.isNotNull(request.getEnable()), User::getEnable, request.getEnable());
+                .or()
+                .eq(ObjectUtil.isNotNull(request.getEnable()), User::getEnable, request.getEnable());
 
         IPage<UserPageDto> ret = getBaseMapper().pageDetail(qp,
-                request.getUsername(),
-                request.getGender(),
-                request.getEnable())
-            .convert(dto -> {
-                List<RoleDto> roleDtoList = roleService.findRolesByUserId(dto.getId()).stream()
-                    .map(role -> role.convert(RoleDto.class)).toList();
-                dto.setRoles(roleDtoList);
-                return dto;
-            });
+                        request.getUsername(),
+                        request.getGender(),
+                        request.getEnable())
+                .convert(dto -> {
+                    List<RoleDto> roleDtoList = roleService.findRolesByUserId(dto.getId()).stream()
+                            .map(role -> role.convert(RoleDto.class)).toList();
+                    dto.setRoles(roleDtoList);
+                    return dto;
+                });
         return Page.convert(ret);
     }
 
@@ -212,8 +212,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void resetPassword(Long userId, UpdatePasswordRequest request) {
         String newPw = BCrypt.hashpw(request.getPassword());
         lambdaUpdate().eq(User::getId, userId)
-            .set(User::getPassword, newPw)
-            .update();
+                .set(User::getPassword, newPw)
+                .update();
     }
 
     @Override
@@ -221,12 +221,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void addRoles(Long userId, AddUserRolesRequest request) {
         userRoleService.lambdaUpdate().eq(UserRole::getUserId, userId).remove();
         List<UserRole> list = request.getRoleIds().stream()
-            .map(roleId -> {
-                UserRole userRole = new UserRole();
-                userRole.setUserId(userId);
-                userRole.setRoleId(roleId);
-                return userRole;
-            }).toList();
+                .map(roleId -> {
+                    UserRole userRole = new UserRole();
+                    userRole.setUserId(userId);
+                    userRole.setRoleId(roleId);
+                    return userRole;
+                }).toList();
         userRoleService.saveBatch(list);
     }
 
@@ -246,8 +246,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         if (request.getEnable() != null) {
             lambdaUpdate().eq(User::getId, id)
-                .set(User::getEnable, request.getEnable())
-                .update();
+                    .set(User::getEnable, request.getEnable())
+                    .update();
         }
     }
 
@@ -255,10 +255,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private LoginTokenDto generateToken(User user, List<Role> roles, String currentRoleCode) {
         // 密码验证成功
         StpUtil.login(user.getId(),
-            SaLoginConfig.setExtra(SaTokenConfigure.JWT_USER_ID_KEY, user.getId())
-                .setExtra(SaTokenConfigure.JWT_USERNAME_KEY, user.getUsername())
-                .setExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY, currentRoleCode)
-                .setExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY, roles));
+                SaLoginConfig.setExtra(SaTokenConfigure.JWT_USER_ID_KEY, user.getId())
+                        .setExtra(SaTokenConfigure.JWT_USERNAME_KEY, user.getUsername())
+                        .setExtra(SaTokenConfigure.JWT_CURRENT_ROLE_KEY, currentRoleCode)
+                        .setExtra(SaTokenConfigure.JWT_ROLE_LIST_KEY, roles));
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         LoginTokenDto dto = new LoginTokenDto();
         dto.setAccessToken(tokenInfo.getTokenValue());
