@@ -3,6 +3,7 @@ package com.hongyan.toutiao.config;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -30,7 +31,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
      */
     @Bean
     public StpLogic getStpLogicJwt() {
-        return new StpLogic("jwt");
+        return new StpLogicJwtForStateless();
     }
 
     /**
