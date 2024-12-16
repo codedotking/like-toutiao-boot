@@ -7,10 +7,6 @@ import org.mapstruct.Mapper;
 
 import static com.hongyan.toutiao.mapstruct.MapstructConstant.DEFAULT_COMPONENT_MODEL;
 
-
-/**
- * user to userDetailDto
- */
 @Mapper(componentModel = DEFAULT_COMPONENT_MODEL)
 public interface UserToUserDetailDto extends BeanConvertMapper<User, UserDetailDto> {
 

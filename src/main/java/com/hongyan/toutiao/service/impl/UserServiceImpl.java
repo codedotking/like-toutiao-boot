@@ -80,6 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public UserDetailDto detail(Long userId, String roleCode) {
         User user = getById(userId);
+        log.info("user: {}", user);
         UserDetailDto userDetailDto = user.convert(UserDetailDto.class);
         ProfileDto profileDto = IProfileService.findByUserId(userId).convert(ProfileDto.class);
         List<RoleDto> roleDtoList = roleService.findRolesByUserId(userId)

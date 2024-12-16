@@ -1,14 +1,12 @@
 package com.hongyan.toutiao.model.dto;
 
-import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
 
 /**
  * 用户详细信息
- *
- * @author dhb
  */
 @Data
 public class UserDetailDto {

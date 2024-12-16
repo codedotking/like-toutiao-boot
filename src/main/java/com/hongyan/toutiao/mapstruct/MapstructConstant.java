@@ -2,8 +2,6 @@ package com.hongyan.toutiao.mapstruct;
 
 /**
  * mapstruct常量
- *
- * @author dhb
  */
 public class MapstructConstant {
 
